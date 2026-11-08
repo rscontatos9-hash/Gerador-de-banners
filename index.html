@@ -1,624 +1,425 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criador de Banner com CTA - Premium + Logo + Posicionamento</title>
-    <!-- Fontes Premium de Alta Conversão -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@700;900&family=Bebas+Neue&family=Pacifico&family=Poppins:wght@700;900&family=Open+Sans:wght@700;800&family=Raleway:wght@700;900&family=Ubuntu:wght@700&family=Oswald:wght@700&family=Nunito:wght@700;900&family=Playfair+Display:wght@700&family=Merriweather:wght@700&family=Lato:wght@700;900&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6C63FF;
-            --primary-hover: #5A52E5;
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px 10px;
-        }
-
-        .container {
-            background-color: var(--card);
-            padding: 30px 20px;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            width: 100%;
-            max-width: 720px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        h1 { text-align: center; margin-bottom: 5px; color: var(--text); font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
-        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 25px; font-size: 0.85rem; }
-
-        /* ESTILOS DAS ABAS */
-        .tabs-header {
-            display: flex;
-            gap: 8px;
-            border-bottom: 2px solid var(--border);
-            margin-bottom: 25px;
-            padding-bottom: 0;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-weight: 800;
-            font-size: 0.85rem;
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            border-radius: 40px 40px 0 0;
-            letter-spacing: -0.3px;
-        }
-        .tab-btn.active {
-            color: var(--primary);
-            background: rgba(108, 99, 255, 0.1);
-            border-bottom: 3px solid var(--primary);
-        }
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.25s ease;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* INPUTS E GRIDS (IGUAIS AO ORIGINAL) */
-        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-        .input-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
-
-        input[type="text"], select {
-            width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
-            background-color: #0f172a; color: var(--text); font-size: 0.9rem; outline: none;
-            transition: all 0.2s; height: 48px;
-        }
-
-        input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2); }
-
-        .style-group {
-            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 18px;
-            border: 1px solid var(--border); margin-bottom: 20px;
-        }
-
-        .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .style-item input[type="color"] { width: 100%; height: 48px; border: 1px solid var(--border); cursor: pointer; background: #0f172a; border-radius: 10px; padding: 4px; }
-
-        .preview-box {
-            background: radial-gradient(circle at top, #1e293b, #080e1a);
-            padding: 50px 20px; border-radius: 18px; border: 1px solid var(--border);
-            margin: 20px 0; min-height: 220px; display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden; box-shadow: inset 0 4px 20px rgba(0,0,0,0.4);
-        }
-        .preview-tag { position: absolute; top: 12px; left: 15px; font-size: 0.6rem; color: var(--text-muted); font-weight: 900; text-transform: uppercase; }
-
-        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn {
-            padding: 15px; border: none; border-radius: 12px; font-size: 0.85rem; font-weight: 800;
-            cursor: pointer; transition: 0.3s; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-show { background: #334155; color: white; }
-        .btn-copy { background: var(--primary); color: white; }
-        .btn-copy:hover { background: var(--primary-hover); transform: translateY(-2px); }
-
-        #codeContainer { display: none; margin-top: 20px; animation: fadeIn 0.4s ease; }
-        #htmlOutput { 
-            background: #000; color: #10b981; padding: 15px; border-radius: 12px; 
-            font-family: 'Courier New', monospace; font-size: 0.7rem; word-break: break-all;
-            border: 1px solid var(--border); max-height: 200px; overflow-y: auto;
-        }
-
-        .clear-btn {
-            width: 100%; margin-top: 20px; padding: 12px; background: transparent;
-            color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; font-weight: 600;
-        }
-
-        /* Estilos da Aba de Logo */
-        .logo-upload-area, .positioning-area {
-            background: rgba(0,0,0,0.2);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            padding: 20px;
-        }
-        .logo-preview-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .logo-preview-img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            background: #0f172a;
-            border-radius: 16px;
-            border: 2px dashed var(--border);
-            padding: 8px;
-        }
-        .file-label {
-            background: var(--primary);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.2s;
-            display: inline-block;
-        }
-        .file-label:hover { background: var(--primary-hover); }
-        input[type="file"] { display: none; }
-        .logo-control-row, .position-control-row {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            margin: 15px 0;
-            justify-content: space-between;
-        }
-        .logo-control, .position-control {
-            flex: 1;
-            min-width: 120px;
-        }
-        .logo-control label, .position-control label {
-            font-size: 0.7rem;
-        }
-        .logo-control input, .position-control input, .position-control select {
-            width: 100%;
-            background: #0f172a;
-            border: 1px solid var(--border);
-            padding: 8px;
-            border-radius: 12px;
-            color: white;
-        }
-        .btn-clear-logo {
-            background: #2d3a4e;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .info-text {
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-align: center;
-            margin-top: 15px;
-        }
-        .positioning-area select {
-            background-color: #0f172a;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 550px) { .input-row, .style-grid { grid-template-columns: 1fr; } .tabs-header { justify-content: center; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criador de Banner com CTA - Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Montserrat:wght@700;900&family=Bebas+Neue&family=Pacifico&family=Poppins:wght@700;900&family=Open+Sans:wght@700;800&family=Raleway:wght@700;900&family=Ubuntu:wght@700&family=Oswald:wght@700&family=Nunito:wght@700;900&family=Playfair+Display:wght@700&family=Merriweather:wght@700&family=Lato:wght@700;900&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#6C63FF;--primary-hover:#5A52E5;--bg:#0f172a;--card:#1e293b;--text:#f8fafc;--text-muted:#94a3b8;--border:#334155}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px 10px}
+.container{background:var(--card);padding:30px 20px;border-radius:24px;box-shadow:0 25px 50px rgba(0,0,0,.5);width:100%;max-width:720px;border:1px solid rgba(255,255,255,.05)}
+h1{text-align:center;margin-bottom:5px;font-size:1.8rem;font-weight:900;letter-spacing:-1px}
+p.subtitle{text-align:center;color:var(--text-muted);margin-bottom:25px;font-size:.85rem}
+.tabs-header{display:flex;gap:8px;border-bottom:2px solid var(--border);margin-bottom:25px;flex-wrap:wrap}
+.tab-btn{background:transparent;border:none;color:var(--text-muted);font-weight:800;font-size:.85rem;padding:10px 16px;cursor:pointer;transition:.2s;border-radius:40px 40px 0 0;letter-spacing:-.3px}
+.tab-btn.active{color:var(--primary);background:rgba(108,99,255,.1);border-bottom:3px solid var(--primary)}
+.tab-content{display:none;animation:fadeIn .25s ease}
+.tab-content.active{display:block}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:15px}
+.input-group{margin-bottom:12px}
+label{display:block;margin-bottom:6px;font-weight:700;font-size:.65rem;text-transform:uppercase;color:var(--text-muted);letter-spacing:.5px}
+input[type=text],select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:#0f172a;color:var(--text);font-size:.9rem;outline:none;transition:.2s;height:48px}
+input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(108,99,255,.2)}
+.style-group{background:rgba(0,0,0,.2);padding:20px;border-radius:18px;border:1px solid var(--border);margin-bottom:20px}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.style-item input[type=color]{width:100%;height:48px;border:1px solid var(--border);cursor:pointer;background:#0f172a;border-radius:10px;padding:4px}
+.preview-box{background:radial-gradient(circle at top,#1e293b,#080e1a);padding:50px 20px;border-radius:18px;border:1px solid var(--border);margin:20px 0;min-height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:inset 0 4px 20px rgba(0,0,0,.4)}
+.preview-tag{position:absolute;top:12px;left:15px;font-size:.6rem;color:var(--text-muted);font-weight:900;text-transform:uppercase}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{padding:15px;border:none;border-radius:12px;font-size:.85rem;font-weight:800;cursor:pointer;transition:.3s;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-show{background:#334155;color:#fff}
+.btn-copy{background:var(--primary);color:#fff}
+.btn-copy:hover{background:var(--primary-hover);transform:translateY(-2px)}
+#codeContainer{display:none;margin-top:20px;animation:fadeIn .4s ease}
+#htmlOutput{background:#000;color:#10b981;padding:15px;border-radius:12px;font-family:'Courier New',monospace;font-size:.7rem;word-break:break-all;border:1px solid var(--border);max-height:200px;overflow-y:auto}
+.clear-btn{width:100%;margin-top:20px;padding:12px;background:transparent;color:var(--text-muted);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-weight:600}
+.logo-upload-area,.positioning-area{background:rgba(0,0,0,.2);border-radius:18px;border:1px solid var(--border);padding:20px}
+.logo-preview-card{display:flex;flex-direction:column;align-items:center;gap:15px;margin-bottom:20px}
+.logo-preview-img{width:100px;height:100px;object-fit:contain;background:#0f172a;border-radius:16px;border:2px dashed var(--border);padding:8px}
+.file-label{background:var(--primary);color:#fff;padding:10px 18px;border-radius:40px;font-weight:bold;cursor:pointer;font-size:.8rem;transition:.2s;display:inline-block}
+.file-label:hover{background:var(--primary-hover)}
+input[type=file]{display:none}
+.logo-control-row,.position-control-row{display:flex;gap:16px;flex-wrap:wrap;margin:15px 0;justify-content:space-between}
+.logo-control,.position-control{flex:1;min-width:120px}
+.logo-control input,.position-control input,.position-control select{width:100%;background:#0f172a;border:1px solid var(--border);padding:8px;border-radius:12px;color:#fff}
+.btn-clear-logo{background:#2d3a4e;border:none;padding:10px;border-radius:40px;color:#fff;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+.info-text{color:var(--text-muted);font-size:.7rem;text-align:center;margin-top:15px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:550px){.input-row,.style-grid{grid-template-columns:1fr}.tabs-header{justify-content:center}}
+</style>
 </head>
 <body>
-
 <div class="container">
-    <h1>Criador de Banner com CTA ✨</h1>
-    <p class="subtitle">Design Profissional + Logo + Controle de Posicionamento</p>
+<h1>Criador de Banner com CTA ✨</h1>
+<p class="subtitle">Design Profissional + Logo + Controle de Posicionamento</p>
 
-    <!-- Sistema de abas (3 abas) -->
-    <div class="tabs-header">
-        <button class="tab-btn active" data-tab="tab-config">🎨 Configuração do Banner</button>
-        <button class="tab-btn" data-tab="tab-logo">🖼️ Upload de Logo</button>
-        <button class="tab-btn" data-tab="tab-position">📐 Posicionamento</button>
-    </div>
+<div class="tabs-header">
+<button class="tab-btn active" data-tab="tab-config">🎨 Configuração do Banner</button>
+<button class="tab-btn" data-tab="tab-logo">🖼️ Upload de Logo</button>
+<button class="tab-btn" data-tab="tab-position">📐 Posicionamento</button>
+</div>
 
-    <!-- ABA 1: CONFIGURAÇÃO ORIGINAL (Nenhum item removido) -->
-    <div id="tab-config" class="tab-content active">
-        <div class="input-row">
-            <div class="input-group">
-                <label>Link de Destino</label>
-                <input type="text" id="urlInput" placeholder="https://..." oninput="generate()">
-            </div>
-            <div class="input-group">
-                <label>Texto do CTA</label>
-                <input type="text" id="phraseInput" placeholder="CLIQUE AQUI" oninput="generate()">
-            </div>
-        </div>
+<div id="tab-config" class="tab-content active">
+<div class="input-row">
+<div class="input-group"><label>Link de Destino</label><input type="text" id="urlInput" placeholder="https://..." oninput="generate()"></div>
+<div class="input-group"><label>Texto do CTA</label><input type="text" id="phraseInput" placeholder="CLIQUE AQUI" oninput="generate()"></div>
+</div>
+<div class="style-group">
+<div class="style-grid">
+<div class="style-item"><label>Ícone</label><select id="iconInput" onchange="generate()"><option value="">Sem Ícone</option><option value="🔥">🔥 Fogo</option><option value="⚡">⚡ Raio</option><option value="🛒">🛒 Compra</option><option value="💥">💥 Impacto</option><option value="⭐">⭐ Estrela</option><option value="🎯">🎯 Alvo</option><option value="🎁">🎁 Presente</option><option value="🚀">🚀 Foguete</option><option value="💎">💎 Diamante</option></select></div>
+<div class="style-item"><label>Fonte Premium</label><select id="fontFamily" onchange="generate()">
+<option value="'Poppins',sans-serif">Poppins (Marketing)</option>
+<option value="'Montserrat',sans-serif">Montserrat</option>
+<option value="'Bebas Neue',sans-serif">Bebas Neue</option>
+<option value="'Oswald',sans-serif">Oswald (Bold)</option>
+<option value="'Raleway',sans-serif">Raleway</option>
+<option value="'Nunito',sans-serif">Nunito (Round)</option>
+<option value="'Roboto',sans-serif">Roboto</option>
+<option value="'Inter',sans-serif">Inter</option>
+<option value="'Lato',sans-serif">Lato</option>
+<option value="'Open Sans',sans-serif">Open Sans</option>
+<option value="'Playfair Display',serif">Luxo</option>
+<option value="'Pacifico',cursive">Retro</option>
+<option value="'Arial Black',sans-serif">Arial Black</option>
+<option value="Impact,sans-serif">Impacto</option>
+</select></div>
+<div class="style-item"><label>Cor Texto</label><input type="color" id="linkColor" value="#ffffff" oninput="generate()"></div>
+<div class="style-item"><label>Cor Fundo</label><input type="color" id="linkBgColor" value="#6C63FF" oninput="generate()"></div>
+<div class="style-item"><label>Banner</label><select id="bannerType" onchange="generate()">
+<option value="flat">Simples (Flat)</option>
+<option value="pill">Pílula (Redondo)</option>
+<option value="neon">Brilho Neon</option>
+<option value="3d">Botão 3D</option>
+<option value="glass">Vidro (Glass)</option>
+<option value="floating-capsule">Floating Capsule</option>
+<option value="edge-gradient">Edge-to-Edge</option>
+<option value="sticky-bottom">Sticky Bottom Bar</option>
+</select></div>
+<div class="style-item"><label>Tamanho</label><select id="bannerSize" onchange="generate()">
+<option value="12px 24px|auto">Padrão (Compacto)</option>
+<option value="18px 40px|auto">Médio (Conversão)</option>
+<option value="25px 60px|auto">Grande (Impacto)</option>
+<option value="20px 20px|100%">Largura Total (Página)</option>
+<option value="15px 30px|300px">Sidebar (300px)</option>
+<option value="10px 20px|100%">Slim (Fino)</option>
+</select></div>
+<div class="style-item"><label>Animação CTA</label><select id="animationType" onchange="generate()">
+<option value="none">Nenhuma</option>
+<option value="sweep 2s infinite">Luz Passante ✨</option>
+<option value="pulse 1.5s infinite">Pulsar</option>
+<option value="float 2s infinite">Flutuar</option>
+<option value="shake 0.5s infinite">Tremer</option>
+<option value="bounce 1s infinite">Pular</option>
+<option value="heartbeat 1.5s infinite">Batida ❤️</option>
+<option value="jello 2s infinite">Gelatina</option>
+<option value="wobble 2s infinite">Balanço</option>
+<option value="tada 2s infinite">Tadaaa! 🎉</option>
+<option value="rubberBand 1s infinite">Elástico</option>
+<option value="flip 3s infinite">Giro 3D</option>
+<option value="swing 2s infinite">Pêndulo</option>
+<option value="flash 1.5s infinite">Flash</option>
+<option value="glowPulse 2s infinite">Brilho</option>
+<option value="zoomPulse 2s infinite">Zoom</option>
+</select></div>
+<div class="style-item"><label>Fonte: <span id="fontSizeVal">18px</span></label><input type="range" id="linkFontSize" min="10" max="45" value="18" style="width:100%;accent-color:var(--primary)" oninput="generate()"></div>
+<div class="style-item" style="grid-column:1/-1">
+  <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;font-size:.75rem;color:var(--text)">
+    <input type="checkbox" id="includeFontLink" style="width:18px;height:18px;accent-color:var(--primary);cursor:pointer">
+    Incluir <code style="background:#0f172a;padding:2px 6px;border-radius:4px;font-size:.7rem">&lt;link&gt;</code> da fonte no código gerado
+  </label>
+</div>
+</div>
+</div>
+</div>
 
-        <div class="style-group">
-            <div class="style-grid">
-                <div class="style-item">
-                    <label>Ícone</label>
-                    <select id="iconInput" onchange="generate()">
-                        <option value="">Sem Ícone</option>
-                        <option value="🔥">🔥 Fogo</option>
-                        <option value="⚡">⚡ Raio</option>
-                        <option value="🛒">🛒 Compra</option>
-                        <option value="💥">💥 Impacto</option>
-                        <option value="⭐">⭐ Estrela</option>
-                        <option value="🎯">🎯 Alvo</option>
-                        <option value="🎁">🎁 Presente</option>
-                        <option value="🚀">🚀 Foguete</option>
-                        <option value="💎">💎 Diamante</option>
-                    </select>
-                </div>
-                <div class="style-item">
-                    <label>Fonte Premium</label>
-                    <select id="fontFamily" onchange="generate()">
-                        <option value="'Poppins', sans-serif">Poppins (Marketing)</option>
-                        <option value="'Montserrat', sans-serif">Montserrat</option>
-                        <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
-                        <option value="'Oswald', sans-serif">Oswald (Bold)</option>
-                        <option value="'Raleway', sans-serif">Raleway</option>
-                        <option value="'Nunito', sans-serif">Nunito (Round)</option>
-                        <option value="'Roboto', sans-serif">Roboto</option>
-                        <option value="'Inter', sans-serif">Inter</option>
-                        <option value="'Lato', sans-serif">Lato</option>
-                        <option value="'Open Sans', sans-serif">Open Sans</option>
-                        <option value="'Playfair Display', serif">Luxo</option>
-                        <option value="'Pacifico', cursive">Retro</option>
-                        <option value="'Arial Black', sans-serif">Arial Black</option>
-                        <option value="Impact, sans-serif">Impacto</option>
-                    </select>
-                </div>
-                <div class="style-item">
-                    <label>Cor Texto</label>
-                    <input type="color" id="linkColor" value="#ffffff" oninput="generate()">
-                </div>
-                <div class="style-item">
-                    <label>Cor Fundo</label>
-                    <input type="color" id="linkBgColor" value="#6C63FF" oninput="generate()">
-                </div>
-                <div class="style-item">
-                    <label>Banner</label>
-                    <select id="bannerType" onchange="generate()">
-                        <option value="flat">Simples (Flat)</option>
-                        <option value="pill">Pílula (Redondo)</option>
-                        <option value="neon">Brilho Neon</option>
-                        <option value="3d">Botão 3D</option>
-                        <option value="glass">Vidro (Glass)</option>
-                        <option value="floating-capsule">Floating Capsule</option>
-                        <option value="edge-gradient">Edge-to-Edge</option>
-                        <option value="sticky-bottom">Sticky Bottom Bar</option>
-                    </select>
-                </div>
-                <div class="style-item">
-                    <label>Tamanho</label>
-                    <select id="bannerSize" onchange="generate()">
-                        <option value="12px 24px|auto">Padrão (Compacto)</option>
-                        <option value="18px 40px|auto">Médio (Conversão)</option>
-                        <option value="25px 60px|auto">Grande (Impacto)</option>
-                        <option value="20px 20px|100%">Largura Total (Página)</option>
-                        <option value="15px 30px|300px">Sidebar (300px)</option>
-                        <option value="10px 20px|100%">Slim (Fino)</option>
-                    </select>
-                </div>
-                <div class="style-item">
-                    <label>Animação CTA</label>
-                    <select id="animationType" onchange="generate()">
-                        <option value="none">Nenhuma</option>
-                        <option value="sweep 2s infinite">Luz Passante ✨</option>
-                        <option value="pulse 1.5s infinite">Pulsar</option>
-                        <option value="float 2s infinite">Flutuar</option>
-                        <option value="shake 0.5s infinite">Tremer</option>
-                        <option value="bounce 1s infinite">Pular</option>
-                        <option value="heartbeat 1.5s infinite">Batida ❤️</option>
-                        <option value="jello 2s infinite">Gelatina</option>
-                        <option value="wobble 2s infinite">Balanço</option>
-                        <option value="tada 2s infinite">Tadaaa! 🎉</option>
-                        <option value="rubberBand 1s infinite">Elástico</option>
-                        <option value="flip 3s infinite">Giro 3D</option>
-                        <option value="swing 2s infinite">Pêndulo</option>
-                        <option value="flash 1.5s infinite">Flash</option>
-                        <option value="glowPulse 2s infinite">Brilho</option>
-                        <option value="zoomPulse 2s infinite">Zoom</option>
-                    </select>
-                </div>
-                <div class="style-item">
-                    <label>Fonte: <span id="fontSizeVal">18px</span></label>
-                    <input type="range" id="linkFontSize" min="10" max="45" value="18" style="width: 100%; accent-color: var(--primary);" oninput="generate()">
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="tab-logo" class="tab-content">
+<div class="logo-upload-area">
+<div class="logo-preview-card">
+<div style="font-weight:700;margin-bottom:5px">Prévia da Logo</div>
+<img id="logoPreviewImg" class="logo-preview-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='%2394a3b8'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E" alt="preview logo">
+<label class="file-label">📁 Selecionar Logo (PNG, JPG, SVG)<input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/jpg,image/svg+xml,image/webp"></label>
+<button id="clearLogoBtn" class="btn-clear-logo">🗑️ Remover Logo</button>
+</div>
+<div class="logo-control-row">
+<div class="logo-control"><label>📐 Altura Máx. (px)</label><input type="number" id="logoMaxHeight" value="40" min="20" max="90" step="2"></div>
+<div class="logo-control"><label>🔘 Raio da Borda (px)</label><input type="number" id="logoBorderRadius" value="8" min="0" max="30" step="1"></div>
+<div class="logo-control"><label>↔️ Margem (px)</label><input type="number" id="logoMarginRight" value="10" min="0" max="25" step="1"></div>
+</div>
+<div class="info-text">💡 A logo substitui o ícone. A imagem é convertida em Base64 no código final.</div>
+</div>
+</div>
 
-    <!-- ABA 2: UPLOAD DE LOGO (INALTERADA) -->
-    <div id="tab-logo" class="tab-content">
-        <div class="logo-upload-area">
-            <div class="logo-preview-card">
-                <div style="font-weight: 700; margin-bottom: 5px;">Prévia da Logo</div>
-                <img id="logoPreviewImg" class="logo-preview-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='%2394a3b8'%3E%3C/circle%3E%3Cpolyline points='21 15 16 10 5 21'%3E%3C/polyline%3E%3C/svg%3E" alt="preview logo">
-                <label class="file-label">
-                    📁 Selecionar Logo (PNG, JPG, SVG)
-                    <input type="file" id="logoFileInput" accept="image/png, image/jpeg, image/jpg, image/svg+xml, image/webp">
-                </label>
-                <button id="clearLogoBtn" class="btn-clear-logo">🗑️ Remover Logo</button>
-            </div>
+<div id="tab-position" class="tab-content">
+<div class="positioning-area">
+<div class="position-control-row">
+<div class="position-control"><label>📌 Alinhamento Horizontal</label><select id="justifyContent"><option value="flex-start">Esquerda</option><option value="center" selected>Centro</option><option value="flex-end">Direita</option></select></div>
+<div class="position-control"><label>⬆️ Alinhamento Vertical</label><select id="alignItems"><option value="flex-start">Topo</option><option value="center" selected>Centro</option><option value="flex-end">Base</option></select></div>
+<div class="position-control"><label>🔄 Ordem dos elementos</label><select id="flexDirection"><option value="row" selected>Logo ➡ Texto</option><option value="row-reverse">Texto ➡ Logo</option></select></div>
+</div>
+<div class="position-control-row">
+<div class="position-control"><label>📏 Espaçamento (gap)</label><input type="number" id="gapSize" value="10" min="0" max="40" step="2"> px</div>
+<div class="position-control"><label>📦 Padding extra</label><input type="number" id="extraPadding" value="0" min="0" max="30" step="2"> px</div>
+</div>
+<div class="info-text">🎯 Controle a posição do conteúdo dentro do banner.</div>
+</div>
+</div>
 
-            <div class="logo-control-row">
-                <div class="logo-control">
-                    <label>📐 Altura Máx. (px)</label>
-                    <input type="number" id="logoMaxHeight" value="40" min="20" max="90" step="2">
-                </div>
-                <div class="logo-control">
-                    <label>🔘 Raio da Borda (px)</label>
-                    <input type="number" id="logoBorderRadius" value="8" min="0" max="30" step="1">
-                </div>
-                <div class="logo-control">
-                    <label>↔️ Margem Direita (px)</label>
-                    <input type="number" id="logoMarginRight" value="10" min="0" max="25" step="1">
-                </div>
-            </div>
-            <div class="info-text">
-                💡 Dica: A logo substitui automaticamente o ícone no banner. Remova a logo para usar ícone.<br>
-                ⚡ A imagem é convertida em Base64 e fica embutida no código HTML final.
-            </div>
-        </div>
-    </div>
+<div class="preview-box"><span class="preview-tag">Preview Real-Time</span><div id="previewOutput"></div></div>
 
-    <!-- ABA 3: POSICIONAMENTO DOS ELEMENTOS (NOVO) -->
-    <div id="tab-position" class="tab-content">
-        <div class="positioning-area">
-            <div class="position-control-row">
-                <div class="position-control">
-                    <label>📌 Alinhamento Horizontal</label>
-                    <select id="justifyContent">
-                        <option value="flex-start">Esquerda</option>
-                        <option value="center" selected>Centro</option>
-                        <option value="flex-end">Direita</option>
-                    </select>
-                </div>
-                <div class="position-control">
-                    <label>⬆️ Alinhamento Vertical</label>
-                    <select id="alignItems">
-                        <option value="flex-start">Topo</option>
-                        <option value="center" selected>Centro</option>
-                        <option value="flex-end">Base</option>
-                    </select>
-                </div>
-                <div class="position-control">
-                    <label>🔄 Ordem dos elementos</label>
-                    <select id="flexDirection">
-                        <option value="row" selected>Logo ➡ Texto</option>
-                        <option value="row-reverse">Texto ➡ Logo</option>
-                    </select>
-                </div>
-            </div>
-            <div class="position-control-row">
-                <div class="position-control">
-                    <label>📏 Espaçamento (gap) entre elementos</label>
-                    <input type="number" id="gapSize" value="10" min="0" max="40" step="2"> px
-                </div>
-                <div class="position-control">
-                    <label>📦 Padding interno extra (opcional)</label>
-                    <input type="number" id="extraPadding" value="0" min="0" max="30" step="2"> px
-                </div>
-            </div>
-            <div class="info-text">
-                🎯 Controle a posição do logo e do texto dentro do banner. O "Espaçamento" define a distância entre a logo e o texto.<br>
-                O "Padding interno" adiciona espaço interno extra ao redor de todo o conteúdo.
-            </div>
-        </div>
-    </div>
-
-    <!-- Preview e ações (compartilhado) -->
-    <div class="preview-box">
-        <span class="preview-tag">Preview Real-Time</span>
-        <div id="previewOutput"></div>
-    </div>
-
-    <div class="action-grid">
-        <button class="btn btn-show" onclick="toggleCode()">👁️ Mostrar Código</button>
-        <button class="btn btn-copy" onclick="copyHTML()">📋 Copiar HTML</button>
-    </div>
-
-    <div id="codeContainer">
-        <div id="htmlOutput"></div>
-    </div>
-
-    <button class="clear-btn" onclick="window.location.reload()">Resetar Configurações</button>
+<div class="action-grid">
+<button class="btn btn-show" onclick="toggleCode()">👁️ Mostrar Código</button>
+<button class="btn btn-copy" onclick="copyHTML()">📋 Copiar HTML</button>
+</div>
+<div id="codeContainer"><div id="htmlOutput"></div></div>
+<button class="clear-btn" onclick="resetAll()">Resetar Configurações</button>
 </div>
 
 <script>
-    // ---------- VARIÁVEIS GLOBAIS DE LOGO ----------
-    let uploadedLogoBase64 = null;      
-    let logoMaxHeight = 40;
-    let logoBorderRadius = 8;
-    let logoMarginRight = 10;
+// ---------- ESTADO GLOBAL ----------
+let uploadedLogoBase64 = null;
+let logoMaxHeight = 40, logoBorderRadius = 8, logoMarginRight = 10;
 
-    // Elementos da aba Logo
-    const logoFileInput = document.getElementById('logoFileInput');
-    const logoPreviewImg = document.getElementById('logoPreviewImg');
-    const clearLogoBtn = document.getElementById('clearLogoBtn');
-    const logoMaxHeightInput = document.getElementById('logoMaxHeight');
-    const logoBorderRadiusInput = document.getElementById('logoBorderRadius');
-    const logoMarginRightInput = document.getElementById('logoMarginRight');
+const $ = id => document.getElementById(id);
+const logoFileInput = $('logoFileInput'), logoPreviewImg = $('logoPreviewImg'), clearLogoBtn = $('clearLogoBtn');
+const logoMaxHeightInput = $('logoMaxHeight'), logoBorderRadiusInput = $('logoBorderRadius'), logoMarginRightInput = $('logoMarginRight');
+const justifySelect = $('justifyContent'), alignItemsSelect = $('alignItems'), flexDirectionSelect = $('flexDirection');
+const gapSizeInput = $('gapSize'), extraPaddingInput = $('extraPadding');
 
-    // ---------- ELEMENTOS DA ABA POSICIONAMENTO ----------
-    const justifySelect = document.getElementById('justifyContent');
-    const alignItemsSelect = document.getElementById('alignItems');
-    const flexDirectionSelect = document.getElementById('flexDirection');
-    const gapSizeInput = document.getElementById('gapSize');
-    const extraPaddingInput = document.getElementById('extraPadding');
+// ---------- MAPA DE FAMÍLIAS DE FONTE (Google Fonts) ----------
+const FONT_FAMILIES = {
+  "'Poppins',sans-serif":     "Poppins:wght@700;900",
+  "'Montserrat',sans-serif":  "Montserrat:wght@700;900",
+  "'Bebas Neue',sans-serif":  "Bebas+Neue",
+  "'Oswald',sans-serif":      "Oswald:wght@700",
+  "'Raleway',sans-serif":     "Raleway:wght@700;900",
+  "'Nunito',sans-serif":      "Nunito:wght@700;900",
+  "'Roboto',sans-serif":      "Roboto:wght@700;900",
+  "'Inter',sans-serif":       "Inter:wght@700;900",
+  "'Lato',sans-serif":        "Lato:wght@700;900",
+  "'Open Sans',sans-serif":   "Open+Sans:wght@700;800",
+  "'Playfair Display',serif": "Playfair+Display:wght@700",
+  "'Pacifico',cursive":       "Pacifico",
+  "'Arial Black',sans-serif": null,
+  "Impact,sans-serif":        null
+};
 
-    // ---------- FUNÇÃO PRINCIPAL DE GERAÇÃO (com integração de logo + posicionamento) ----------
-    function generate() {
-        // Dados originais
-        const rawUrl = document.getElementById('urlInput').value.trim() || '#';
-        const url = rawUrl.replace(/"/g, '"');
-        const rawPhrase = document.getElementById('phraseInput').value.trim() || 'CLIQUE AQUI';
-        const phrase = rawPhrase.replace(/"/g, '"');
-        const icon = document.getElementById('iconInput').value;
-        const color = document.getElementById('linkColor').value;
-        const bg = document.getElementById('linkBgColor').value;
-        const banner = document.getElementById('bannerType').value;
-        const anim = document.getElementById('animationType').value;
-        const font = document.getElementById('fontFamily').value;
-        const size = document.getElementById('linkFontSize').value;
-        const sizeData = document.getElementById('bannerSize').value.split('|');
-        document.getElementById('fontSizeVal').innerText = size + 'px';
+// ---------- KEYFRAMES SOB DEMANDA ----------
+const KEYFRAMES = {
+  pulse:'0%,100%{transform:scale(1)}50%{transform:scale(1.05)}',
+  float:'0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}',
+  sweep:'0%{background-position:200% 0}100%{background-position:-200% 0}',
+  shake:'0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}',
+  bounce:'0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-10px)}60%{transform:translateY(-5px)}',
+  heartbeat:'0%{transform:scale(1)}14%{transform:scale(1.1)}28%{transform:scale(1)}42%{transform:scale(1.1)}70%{transform:scale(1)}',
+  jello:'11.1%{transform:none}22.2%{transform:skew(-12.5deg,-12.5deg)}33.3%{transform:skew(6.25deg,6.25deg)}44.4%{transform:skew(-3.125deg,-3.125deg)}55.5%{transform:skew(1.5625deg,1.5625deg)}66.6%{transform:skew(-.78125deg,-.78125deg)}77.7%{transform:skew(.390625deg,.390625deg)}88.8%{transform:skew(-.1953125deg,-.1953125deg)}100%{transform:none}',
+  wobble:'0%{transform:none}15%{transform:translate3d(-25%,0,0) rotate3d(0,0,1,-5deg)}30%{transform:translate3d(20%,0,0) rotate3d(0,0,1,3deg)}45%{transform:translate3d(-15%,0,0) rotate3d(0,0,1,-3deg)}60%{transform:translate3d(10%,0,0) rotate3d(0,0,1,2deg)}75%{transform:translate3d(-5%,0,0) rotate3d(0,0,1,-1deg)}100%{transform:none}',
+  tada:'0%{transform:scale3d(1,1,1)}10%,20%{transform:scale3d(.9,.9,.9) rotate3d(0,0,1,-3deg)}30%,50%,70%,90%{transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,3deg)}40%,60%,80%{transform:scale3d(1.1,1.1,1.1) rotate3d(0,0,1,-3deg)}100%{transform:scale3d(1,1,1)}',
+  rubberBand:'0%{transform:scale3d(1,1,1)}30%{transform:scale3d(1.25,.75,1)}40%{transform:scale3d(.75,1.25,1)}50%{transform:scale3d(1.15,.85,1)}65%{transform:scale3d(.95,1.05,1)}75%{transform:scale3d(1.05,.95,1)}100%{transform:scale3d(1,1,1)}',
+  flip:'0%{transform:perspective(400px) rotate3d(0,1,0,-360deg)}40%{transform:perspective(400px) translate3d(0,0,150px) rotate3d(0,1,0,-190deg)}50%{transform:perspective(400px) translate3d(0,0,150px) rotate3d(0,1,0,-170deg)}80%{transform:perspective(400px) scale3d(.95,.95,.95)}100%{transform:perspective(400px)}',
+  swing:'20%{transform:rotate3d(0,0,1,15deg)}40%{transform:rotate3d(0,0,1,-10deg)}60%{transform:rotate3d(0,0,1,5deg)}80%{transform:rotate3d(0,0,1,-5deg)}100%{transform:rotate3d(0,0,1,0deg)}',
+  flash:'0%,50%,100%{opacity:1}25%,75%{opacity:0}',
+  glowPulse:'0%{box-shadow:0 0 5px rgba(255,255,255,.2)}50%{box-shadow:0 0 25px rgba(255,255,255,.6)}100%{box-shadow:0 0 5px rgba(255,255,255,.2)}',
+  zoomPulse:'0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}'
+};
 
-        // Dados de posicionamento (novos)
-        const justify = justifySelect.value;
-        const alignItems = alignItemsSelect.value;
-        const flexDirection = flexDirectionSelect.value;
-        const gap = `${gapSizeInput.value}px`;
-        const extraPad = `${extraPaddingInput.value}px`;
+const esc = s => s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-        // Import da fonte
-        const fontName = font.split(',')[0].replace(/'/g, '').replace(/\s+/g, '+');
-        const fontImport = `@import url('https://fonts.googleapis.com/css2?family=${fontName}:wght@700;900&display=swap');`;
+// ---------- <link> DA FONTE (opcional) ----------
+function buildFontLink(font) {
+  const family = FONT_FAMILIES[font];
+  if (!family) return '';
+  return `<link href="https://fonts.googleapis.com/css2?family=${family}&display=swap" rel="stylesheet">`;
+}
 
-        let extra = "";
-        let sweep = "";
-        if (anim.includes("sweep")) {
-            sweep = `background-image: linear-gradient(90deg, ${bg} 0%, ${bg} 40%, rgba(255,255,255,0.6) 50%, ${bg} 60%, ${bg} 100%) !important; background-size: 200% 100% !important;`;
-        }
+// ---------- GERADOR PRINCIPAL ----------
+function generate() {
+  const url     = esc($('urlInput').value.trim() || '#');
+  const phrase  = esc($('phraseInput').value.trim() || 'CLIQUE AQUI');
+  const icon    = $('iconInput').value;
+  const color   = $('linkColor').value;
+  const bg      = $('linkBgColor').value;
+  const banner  = $('bannerType').value;
+  const anim    = $('animationType').value;
+  const font    = $('fontFamily').value;
+  const size    = $('linkFontSize').value;
+  const [pad, width] = $('bannerSize').value.split('|');
+  $('fontSizeVal').textContent = size + 'px';
 
-        // Estilos de acordo com tipo de banner
-        if (banner === 'pill') extra = "border-radius: 50px !important;";
-        else if (banner === 'neon') extra = `box-shadow: 0 0 20px ${bg} !important; border-radius: 8px !important;`;
-        else if (banner === '3d') extra = `border-bottom: 5px solid rgba(0,0,0,0.3) !important; border-radius: 8px !important;`;
-        else if (banner === 'glass') extra = `background: rgba(255,255,255,0.2) !important; backdrop-filter: blur(8px) !important; border: 1px solid rgba(255,255,255,0.3) !important; border-radius: 12px !important;`;
-        else if (banner === 'floating-capsule') extra = `border-radius: 50px !important; box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;`;
-        else if (banner === 'edge-gradient') extra = `width: 100% !important; border-radius: 0 !important;`;
-        else if (banner === 'sticky-bottom') extra = `position: fixed !important; bottom: 20px !important; left: 5% !important; width: 90% !important; z-index: 2147483647 !important; border-radius: 12px !important;`;
-        else extra = "border-radius: 8px !important;";
+  const justify    = justifySelect.value;
+  const alignItems = alignItemsSelect.value;
+  const flexDir    = flexDirectionSelect.value;
+  const gap        = `${gapSizeInput.value}px`;
+  const extraPad   = parseInt(extraPaddingInput.value, 10) || 0;
+  const hasLogo    = !!(uploadedLogoBase64 && uploadedLogoBase64.trim());
 
-        // Keyframes para animações
-        const keyframes = `<style>
-            ${fontImport}
-            @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-            @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-            @keyframes sweep { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-            @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-            @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
-            @keyframes heartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.1); } 70% { transform: scale(1); } }
-            @keyframes jello { 11.1% { transform: none } 22.2% { transform: skewX(-12.5deg) skewY(-12.5deg) } 33.3% { transform: skewX(6.25deg) skewY(6.25deg) } 44.4% { transform: skewX(-3.125deg) skewY(-3.125deg) } 55.5% { transform: skewX(1.5625deg) skewY(1.5625deg) } 66.6% { transform: skewX(-0.78125deg) skewY(-0.78125deg) } 77.7% { transform: skewX(0.390625deg) skewY(0.390625deg) } 88.8% { transform: skewX(-0.1953125deg) skewY(-0.1953125deg) } 100% { transform: none } }
-            @keyframes wobble { 0% { transform: none } 15% { transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg) } 30% { transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg) } 45% { transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg) } 60% { transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg) } 75% { transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg) } 100% { transform: none } }
-            @keyframes tada { 0% { transform: scale3d(1, 1, 1) } 10%, 20% { transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg) } 30%, 50%, 70%, 90% { transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg) } 40%, 60%, 80% { transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg) } 100% { transform: scale3d(1, 1, 1) } }
-            @keyframes rubberBand { 0% { transform: scale3d(1, 1, 1) } 30% { transform: scale3d(1.25, .75, 1) } 40% { transform: scale3d(.75, 1.25, 1) } 50% { transform: scale3d(1.15, .85, 1) } 65% { transform: scale3d(.95, 1.05, 1) } 75% { transform: scale3d(1.05, .95, 1) } 100% { transform: scale3d(1, 1, 1) } }
-            @keyframes flip { 0% { transform: perspective(400px) rotate3d(0, 1, 0, -360deg); } 40% { transform: perspective(400px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg); } 50% { transform: perspective(400px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg); } 80% { transform: perspective(400px) scale3d(.95, .95, .95); } 100% { transform: perspective(400px); } }
-            @keyframes swing { 20% { transform: rotate3d(0, 0, 1, 15deg) } 40% { transform: rotate3d(0, 0, 1, -10deg) } 60% { transform: rotate3d(0, 0, 1, 5deg) } 80% { transform: rotate3d(0, 0, 1, -5deg) } 100% { transform: rotate3d(0, 0, 1, 0deg) } }
-            @keyframes flash { 0%, 50%, 100% { opacity: 1 } 25%, 75% { opacity: 0 } }
-            @keyframes glowPulse { 0% { box-shadow: 0 0 5px rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 25px rgba(255,255,255,0.6); } 100% { box-shadow: 0 0 5px rgba(255,255,255,0.2); } }
-            @keyframes zoomPulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        </style>`;
+  // Animação
+  const animName = anim === 'none' ? 'none' : anim.split(' ')[0];
+  const animCss  = anim === 'none' ? '' : `animation:${anim};`;
+  const animKf   = (animName !== 'none' && KEYFRAMES[animName])
+      ? `<style>@keyframes ${animName}{${KEYFRAMES[animName]}}</style>`
+      : '';
 
-        // Montagem do style do link com os novos parâmetros de posicionamento
-        const baseStyle = `display: inline-flex; align-items: ${alignItems}; justify-content: ${justify}; gap: ${gap}; flex-direction: ${flexDirection}; padding: ${sizeData[0]}; width: ${sizeData[1]}; color: ${color}; background-color: ${bg}; ${sweep} font-size: ${size}px; font-weight: 900; text-decoration: none; font-family: ${font}; animation: ${anim}; ${extra} transition: 0.3s; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); box-sizing: border-box;`;
-        // Adiciona padding extra se necessário
-        const finalPadding = extraPad !== '0px' ? `padding: calc(${sizeData[0]} + ${extraPad}) !important;` : '';
-        const style = `${baseStyle} ${finalPadding}`;
+  // Sweep
+  const sweepCss = animName === 'sweep'
+    ? `background-image:linear-gradient(90deg,${bg} 0%,${bg} 40%,rgba(255,255,255,.6) 50%,${bg} 60%,${bg} 100%);background-size:200% 100%;`
+    : '';
 
-        // Conteúdo HTML com logo ou ícone
-        let contentHtml = "";
-        if (uploadedLogoBase64 && uploadedLogoBase64.trim() !== "") {
-            const logoImgTag = `<img src="${uploadedLogoBase64}" style="max-height: ${logoMaxHeight}px; border-radius: ${logoBorderRadius}px; width: auto; vertical-align: middle; margin-right: ${logoMarginRight}px; display: inline-block;" alt="Logo Banner">`;
-            contentHtml = `${logoImgTag} ${phrase}`;
-        } else {
-            if (icon) {
-                contentHtml = `<span>${icon}</span> ${phrase}`;
-            } else {
-                contentHtml = phrase;
-            }
-        }
+  // Variantes
+  const variants = {
+    flat:'border-radius:8px',
+    pill:'border-radius:50px',
+    neon:`border-radius:8px;box-shadow:0 0 20px ${bg}`,
+    '3d':'border-radius:8px;border-bottom:5px solid rgba(0,0,0,.3)',
+    glass:'border-radius:12px;background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3)',
+    'floating-capsule':'border-radius:50px;box-shadow:0 10px 20px rgba(0,0,0,.2)',
+    'edge-gradient':'border-radius:0',
+    'sticky-bottom':'position:fixed;bottom:20px;left:5%;width:90%;z-index:2147483647;border-radius:12px'
+  };
+  let variantCss = variants[banner] || variants.flat;
+  if (banner === 'edge-gradient') variantCss += ';width:100%';
 
-        const finalHTML = `<div style="text-align:center; margin: 15px 0; clear:both; width:100%;">${keyframes}<a href="${url}" target="_blank" style="${style}">${contentHtml}</a></div>`;
+  // Gap só com 2+ elementos
+  const hasIcon = !!icon && !hasLogo;
+  const twoItems = hasLogo || hasIcon;
+  const gapCss = twoItems ? `gap:${gap};` : '';
 
-        document.getElementById('previewOutput').innerHTML = finalHTML;
-        document.getElementById('htmlOutput').innerText = finalHTML;
-    }
+  // Margin da logo respeita direção
+  const logoMarginCss = hasLogo
+    ? (flexDir === 'row-reverse' ? `margin-left:${logoMarginRight}px;` : `margin-right:${logoMarginRight}px;`)
+    : '';
 
-    // Alternar visualização do código (original)
-    function toggleCode() {
-        const el = document.getElementById('codeContainer');
-        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-    }
+  // justify-content só com largura fixa
+  const justifyCss = (width !== 'auto') ? `justify-content:${justify};` : '';
 
-    function copyHTML() {
-        const text = document.getElementById('htmlOutput').innerText;
-        navigator.clipboard.writeText(text).then(() => alert("CTA + Logo copiado com Sucesso! 🚀"));
-    }
+  const padCss = extraPad > 0 ? `padding:calc(${pad} + ${extraPad}px);` : `padding:${pad};`;
 
-    // ---------- LÓGICA DA LOGO: UPLOAD, PREVIEW E PARÂMETROS ----------
-    function updateLogoParamsAndGenerate() {
-        logoMaxHeight = parseInt(logoMaxHeightInput.value, 10) || 40;
-        logoBorderRadius = parseInt(logoBorderRadiusInput.value, 10) || 8;
-        logoMarginRight = parseInt(logoMarginRightInput.value, 10) || 10;
-        generate();
-    }
+  const style = [
+    'display:inline-flex',
+    `align-items:${alignItems}`,
+    justifyCss,
+    gapCss,
+    `flex-direction:${flexDir}`,
+    padCss,
+    `width:${width};max-width:100%`,
+    `color:${color}`,
+    `background-color:${bg}`,
+    sweepCss,
+    `font-size:${size}px`,
+    'font-weight:900',
+    'text-decoration:none',
+    `font-family:${font}`,
+    animCss,
+    variantCss,
+    'box-shadow:0 10px 25px rgba(0,0,0,.2)',
+    'transition:.3s',
+    'text-align:center',
+    'box-sizing:border-box'
+  ].filter(Boolean).join(';');
 
-    logoFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            alert("Por favor, selecione uma imagem válida (PNG, JPG, SVG, WEBP).");
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            uploadedLogoBase64 = evt.target.result;
-            logoPreviewImg.src = uploadedLogoBase64;
-            generate();
-        };
-        reader.readAsDataURL(file);
-    });
+  // Conteúdo
+  let content;
+  if (hasLogo) {
+    content = `<img src="${uploadedLogoBase64}" alt="" style="max-height:${logoMaxHeight}px;border-radius:${logoBorderRadius}px;width:auto;vertical-align:middle;${logoMarginCss}">${phrase}`;
+  } else if (icon) {
+    content = `<span>${icon}</span>${phrase}`;
+  } else {
+    content = phrase;
+  }
 
-    clearLogoBtn.addEventListener('click', () => {
-        uploadedLogoBase64 = null;
-        logoPreviewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='%2394a3b8'%3E%3C/circle%3E%3Cpolyline points='21 15 16 10 5 21'%3E%3C/polyline%3E%3C/svg%3E";
-        logoFileInput.value = '';
-        generate();
-    });
+  const inner = `<div style="text-align:center;margin:15px 0"><a href="${url}" target="_blank" rel="noopener noreferrer" style="${style}">${content}</a></div>`;
 
-    logoMaxHeightInput.addEventListener('input', updateLogoParamsAndGenerate);
-    logoBorderRadiusInput.addEventListener('input', updateLogoParamsAndGenerate);
-    logoMarginRightInput.addEventListener('input', updateLogoParamsAndGenerate);
+  // Preview: SEM <link> (página já tem as fontes no <head>)
+  $('previewOutput').innerHTML = animKf + inner;
 
-    // ---------- EVENTOS DA ABA POSICIONAMENTO ----------
-    justifySelect.addEventListener('change', generate);
-    alignItemsSelect.addEventListener('change', generate);
-    flexDirectionSelect.addEventListener('change', generate);
-    gapSizeInput.addEventListener('input', generate);
-    extraPaddingInput.addEventListener('input', generate);
+  // Código copiado: com ou sem <link> conforme checkbox
+  const fontLink = $('includeFontLink').checked ? buildFontLink(font) : '';
+  $('htmlOutput').textContent = fontLink + animKf + inner;
+}
 
-    // ---------- SISTEMA DE ABAS (inalterado, apenas incluindo a nova) ----------
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+// ---------- UTILITÁRIOS ----------
+function toggleCode() {
+  const el = $('codeContainer');
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+function copyHTML() {
+  navigator.clipboard.writeText($('htmlOutput').textContent)
+    .then(() => alert('CTA + Logo copiado com Sucesso! 🚀'))
+    .catch(() => alert('Falha ao copiar.'));
+}
+function resetAll() {
+  uploadedLogoBase64 = null;
+  logoPreviewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='%2394a3b8'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E";
+  logoFileInput.value = '';
+  $('urlInput').value = '';
+  $('phraseInput').value = '';
+  $('linkColor').value = '#ffffff';
+  $('linkBgColor').value = '#6C63FF';
+  $('linkFontSize').value = 18;
+  $('iconInput').value = '';
+  $('bannerType').value = 'flat';
+  $('bannerSize').value = '12px 24px|auto';
+  $('animationType').value = 'none';
+  $('fontFamily').value = "'Poppins',sans-serif";
+  $('includeFontLink').checked = false;
+  logoMaxHeightInput.value = 40;
+  logoBorderRadiusInput.value = 8;
+  logoMarginRightInput.value = 10;
+  logoMaxHeight = 40; logoBorderRadius = 8; logoMarginRight = 10;
+  justifySelect.value = 'center'; alignItemsSelect.value = 'center';
+  flexDirectionSelect.value = 'row';
+  gapSizeInput.value = 10; extraPaddingInput.value = 0;
+  generate();
+}
 
-    function switchTab(tabId) {
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        tabBtns.forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.getElementById(tabId).classList.add('active');
-        const clickedBtn = Array.from(tabBtns).find(btn => btn.getAttribute('data-tab') === tabId);
-        if(clickedBtn) clickedBtn.classList.add('active');
-    }
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const tabId = btn.getAttribute('data-tab');
-            if(tabId) switchTab(tabId);
-        });
-    });
-
-    // Chamada inicial
+// ---------- EVENTOS DA LOGO ----------
+function updateLogoParams() {
+  logoMaxHeight = parseInt(logoMaxHeightInput.value, 10) || 40;
+  logoBorderRadius = parseInt(logoBorderRadiusInput.value, 10) || 8;
+  logoMarginRight = parseInt(logoMarginRightInput.value, 10) || 10;
+  generate();
+}
+logoFileInput.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) return alert('Selecione uma imagem válida (PNG, JPG, SVG, WEBP).');
+  const reader = new FileReader();
+  reader.onload = evt => {
+    uploadedLogoBase64 = evt.target.result;
+    logoPreviewImg.src = uploadedLogoBase64;
     generate();
+  };
+  reader.readAsDataURL(file);
+});
+clearLogoBtn.addEventListener('click', () => {
+  uploadedLogoBase64 = null;
+  logoPreviewImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='1'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5' fill='%2394a3b8'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E";
+  logoFileInput.value = '';
+  generate();
+});
+[logoMaxHeightInput, logoBorderRadiusInput, logoMarginRightInput].forEach(el => el.addEventListener('input', updateLogoParams));
+
+// ---------- EVENTOS DE POSICIONAMENTO ----------
+[justifySelect, alignItemsSelect, flexDirectionSelect].forEach(el => el.addEventListener('change', generate));
+[gapSizeInput, extraPaddingInput].forEach(el => el.addEventListener('input', generate));
+
+// ---------- CHECKBOX DA FONTE ----------
+$('includeFontLink').addEventListener('change', generate);
+
+// ---------- SISTEMA DE ABAS ----------
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.tab;
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  });
+});
+
+// ---------- INICIALIZAÇÃO ----------
+generate();
 </script>
 </body>
 </html>
